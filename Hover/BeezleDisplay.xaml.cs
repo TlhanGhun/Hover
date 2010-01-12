@@ -13,6 +13,7 @@ using System.Windows.Shapes;
 using System.Windows.Media.Animation;
 using System.Timers;
 using System.IO;
+using System.Windows.Threading;
 
 namespace BeezleTester
 {
@@ -21,7 +22,8 @@ namespace BeezleTester
     /// </summary>
     public partial class BeezleDisplay : Window
     {
-        public string imagePath = "";
+        string imagePath = "";
+        DispatcherTimer timer = new DispatcherTimer();
 
         public BeezleDisplay()
         {
@@ -31,35 +33,28 @@ namespace BeezleTester
             {
                 ImageSourceConverter imgConv = new ImageSourceConverter();
                 string path = imagePath;
-                ImageSource imageSource = (ImageSource) imgConv.ConvertFromString(path);
+                ImageSource imageSource = (ImageSource)imgConv.ConvertFromString(path);
                 imageIcon.Source = imageSource;
             }
 
             imageProgressBar.Visibility = Visibility.Collapsed;
             imageProgressBack.Visibility = Visibility.Collapsed;
             labelText.Visibility = Visibility.Collapsed;
-      
+
         }
 
-        public void setNewIconPath(string iconPath)
+        public void showText(string text)
         {
-            if (File.Exists(iconPath))
-            {
-                ImageSourceConverter imgConv = new ImageSourceConverter();
-                ImageSource imageSource = (ImageSource)imgConv.ConvertFromString(iconPath);
-                imageIcon.Source = imageSource;
-            }
-        }
-
-        public void showText(string text) {
             labelText.Content = text;
             imageProgressBar.Visibility = Visibility.Collapsed;
             imageProgressBack.Visibility = Visibility.Collapsed;
             labelText.Visibility = Visibility.Visible;
+            this.Show();
         }
 
         public void closeNotification()
         {
+            timer.Stop();
             Storyboard story = (Storyboard)this.FindResource("FadeAway");
             story.Completed += new EventHandler(story_Completed);
             story.Begin();
@@ -73,6 +68,8 @@ namespace BeezleTester
 
             imageProgressBar.Width = (imageProgressBack.ActualWidth / 100) * percentage;
             labelText.Visibility = Visibility.Collapsed;
+
+            this.Show();
         }
 
         public void showIconOnly()
@@ -80,8 +77,51 @@ namespace BeezleTester
             imageProgressBar.Visibility = Visibility.Collapsed;
             imageProgressBack.Visibility = Visibility.Collapsed;
             labelText.Visibility = Visibility.Collapsed;
+            this.Show();
         }
 
+        public void setNewIconPath(string iconPath)
+        {
+            if (File.Exists(iconPath))
+            {
+                ImageSourceConverter imgConv = new ImageSourceConverter();
+                ImageSource imageSource = (ImageSource)imgConv.ConvertFromString(iconPath);
+                imageIcon.Source = imageSource;
+                imageIcon.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                imageIcon.Visibility = Visibility.Hidden;
+            }
+        }
+
+        public void setPriority(bool isPriority)
+        {
+            if (isPriority)
+            {
+                this.MainBorder.Background = new SolidColorBrush(Colors.Red);
+            }
+            else
+            {
+                this.MainBorder.Background = new SolidColorBrush(Colors.Black);
+            }
+        }
+
+        public void startTimer(int seconds)
+        {
+            if (timer.IsEnabled)
+            {
+                timer.Stop();
+            }
+            timer.Interval = TimeSpan.FromSeconds(seconds);
+            timer.Tick += new EventHandler(timerCompleted);
+            timer.Start();
+        }
+
+        void timerCompleted(object sender, EventArgs e)
+        {
+            this.closeNotification();
+        }
 
         /// <summary>
         /// Closes the window after we're done fading out.
@@ -104,7 +144,7 @@ namespace BeezleTester
         void OnMouseLeaveHandler(object sender, MouseEventArgs e)
         {
             this.Opacity = 1;
-           // buttonCloseMe.Visibility = Visibility.Hidden;
+            // buttonCloseMe.Visibility = Visibility.Hidden;
         }
 
         // raised when mouse is clicked on window

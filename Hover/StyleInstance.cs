@@ -19,11 +19,11 @@ namespace hover
 
     public class StyleInstance : IStyleInstance
     {
-        private BeezleDisplay myDisplay = new BeezleDisplay();
+        private BeezleDisplay myDisplay;
 
         public StyleInstance()
         {
-            MessageBox.Show("Init");
+            
         }
 
          
@@ -33,7 +33,8 @@ namespace hover
         [ComVisible(true)]
         void IStyleInstance.AdjustPosition(ref int x, ref int y, ref short Alpha, ref bool Done)
         {
-            return;
+            x = Screen.PrimaryScreen.WorkingArea.Height / 2;
+            y = Screen.PrimaryScreen.WorkingArea.Width / 2;
         }
 
         [ComVisible(true)]
@@ -53,22 +54,23 @@ namespace hover
         [ComVisible(true)]
         void IStyleInstance.Show(bool Visible)
         {
-            MessageBox.Show(".Show: " + Visible.ToString());
-            if (Visible)
-            {
-                myDisplay.Show();
-            }
-            else
-            {
-                myDisplay.closeNotification();
-            }
-            return;
         }
 
         [ComVisible(true)]
         void IStyleInstance.UpdateContent(ref notification_info NotificationInfo)
         {
+            if (myDisplay == null)
+            {
+                myDisplay = new BeezleDisplay();
+            }
             myDisplay.setNewIconPath(NotificationInfo.Icon);
+            myDisplay.setPriority(false);
+            if (NotificationInfo.Flags == S_NOTIFICATION_FLAGS.S_NOTIFICATION_IS_PRIORITY)
+            {
+                myDisplay.setPriority(true);
+            }
+
+
 
             switch (NotificationInfo.Scheme) {
                 case "icon only":
@@ -91,7 +93,9 @@ namespace hover
                     myDisplay.showIconOnly();
                     break;
             }
-            myDisplay.Show();
+
+            myDisplay.startTimer(5);
+            
         }
 
 

@@ -87,7 +87,7 @@ namespace hover
         [ComVisible(true)]
         int IStyleEngine.Revision()
         {
-            return 1;
+            return 2;
         }
 
         [ComVisible(true)]
@@ -101,7 +101,7 @@ namespace hover
             Style.Major = Assembly.GetExecutingAssembly().GetName().Version.Major;
             Style.Minor = Assembly.GetExecutingAssembly().GetName().Version.Minor;
             Style.Name = "Hover";
-            Style.Path = System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().CodeBase).Replace("file:\\", "");
+            Style.Path = System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().CodeBase).Replace("file:///", "");
             Style.Schemes = "Icon only|Title|Text|Meter";
             Style.Copyright = "Tlhan Ghun 2010";
             Style.SupportEmail = "info@tlhan-ghun.de";

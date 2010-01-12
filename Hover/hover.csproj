@@ -13,8 +13,7 @@
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>
-    </AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>hover.snk</AssemblyOriginatorKeyFile>
     <StartupObject>
     </StartupObject>
     <ApplicationIcon>Hover.ico</ApplicationIcon>
@@ -141,15 +140,22 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="hover.snk" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="BlackStripe.bmp">
+      <CustomToolNamespace>BeezleTester</CustomToolNamespace>
+    </Resource>
     <Content Include="Hover.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Resource Include="WhiteStripe.bmp">
+      <CustomToolNamespace>BeezleTester</CustomToolNamespace>
+    </Resource>
     <Content Include="Winkle.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
