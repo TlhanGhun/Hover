@@ -24,6 +24,7 @@ namespace BeezleTester
     {
         string imagePath = "";
         DispatcherTimer timer = new DispatcherTimer();
+        bool isDimmed = false;
 
         public BeezleDisplay()
         {
@@ -55,7 +56,14 @@ namespace BeezleTester
         public void closeNotification()
         {
             timer.Stop();
-            Storyboard story = (Storyboard)this.FindResource("FadeAway");
+            Storyboard story;
+            if(isDimmed) {
+                story = (Storyboard)this.FindResource("FadeAwayDimmed");
+            }
+            else
+            {
+                story = (Storyboard)this.FindResource("FadeAwayFull");
+            }
             story.Completed += new EventHandler(story_Completed);
             story.Begin();
         }
@@ -128,7 +136,7 @@ namespace BeezleTester
         /// </summary>
         void story_Completed(object sender, EventArgs e)
         {
-            this.Close();
+            this.Hide();
         }
 
 
@@ -137,14 +145,14 @@ namespace BeezleTester
         void OnMouseEnterHandler(object sender, MouseEventArgs e)
         {
             this.Opacity = 0.2;
-            //buttonCloseMe.Visibility = Visibility.Visible;
+            isDimmed = true;
         }
 
         // raised when mouse cursor leaves the area occupied by the element
         void OnMouseLeaveHandler(object sender, MouseEventArgs e)
         {
             this.Opacity = 1;
-            // buttonCloseMe.Visibility = Visibility.Hidden;
+            isDimmed = false;
         }
 
         // raised when mouse is clicked on window

@@ -40,6 +40,7 @@ namespace hover
         [ComVisible(true)]
         melon.MImage IStyleInstance.GetContent()
         {
+            
             return null;
             throw new NotImplementedException();
         }
@@ -59,42 +60,50 @@ namespace hover
         [ComVisible(true)]
         void IStyleInstance.UpdateContent(ref notification_info NotificationInfo)
         {
-            if (myDisplay == null)
+            try
             {
-                myDisplay = new BeezleDisplay();
+                if (myDisplay == null)
+                {
+                    myDisplay = new BeezleDisplay();
+                }
+                myDisplay.setNewIconPath(NotificationInfo.Icon);
+                myDisplay.setPriority(false);
+                if (NotificationInfo.Flags == S_NOTIFICATION_FLAGS.S_NOTIFICATION_IS_PRIORITY)
+                {
+                    myDisplay.setPriority(true);
+                }
+
+
+
+                switch (NotificationInfo.Scheme)
+                {
+                    case "icon only":
+                        myDisplay.showIconOnly();
+                        break;
+
+                    case "title":
+                        myDisplay.showText(NotificationInfo.Title);
+                        break;
+
+                    case "text":
+                        myDisplay.showText(NotificationInfo.Text);
+                        break;
+
+                    case "meter":
+                        myDisplay.showProgressBar(parseTextForPercentage(NotificationInfo.Text));
+                        break;
+
+                    default:
+                        myDisplay.showIconOnly();
+                        break;
+                }
+
+                myDisplay.startTimer(5);
             }
-            myDisplay.setNewIconPath(NotificationInfo.Icon);
-            myDisplay.setPriority(false);
-            if (NotificationInfo.Flags == S_NOTIFICATION_FLAGS.S_NOTIFICATION_IS_PRIORITY)
+            catch
             {
-                myDisplay.setPriority(true);
+                Console.WriteLine("Mist");
             }
-
-
-
-            switch (NotificationInfo.Scheme) {
-                case "icon only":
-                    myDisplay.showIconOnly();
-                    break;
-
-                case "title":
-                    myDisplay.showText(NotificationInfo.Title);
-                    break;
-
-                case "text":
-                    myDisplay.showText(NotificationInfo.Text);
-                    break;
-
-                case "meter":
-                    myDisplay.showProgressBar(parseTextForPercentage(NotificationInfo.Text));
-                    break;
-
-                default:
-                    myDisplay.showIconOnly();
-                    break;
-            }
-
-            myDisplay.startTimer(5);
             
         }
 

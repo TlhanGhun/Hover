@@ -13,11 +13,19 @@
         MouseDown="OnMouseDown"
         >
     <Window.Resources>
-        <Storyboard x:Key="FadeAway">
-            <DoubleAnimation  Name="FormFadeAwayAnimation"
+        <Storyboard x:Key="FadeAwayDimmed">
+            <DoubleAnimation  Name="FormFadeDimmedAwayAnimation"
                                             Storyboard.TargetName="BeezleWindow"
                                             Storyboard.TargetProperty="(Border.Opacity)"
                                             From="0.2" To="0.0" Duration="0:0:1" 
+                                            AutoReverse="False" RepeatBehavior="1x" 
+                                         />
+        </Storyboard>
+        <Storyboard x:Key="FadeAwayFull">
+            <DoubleAnimation  Name="FormFadeFullAwayAnimation"
+                                            Storyboard.TargetName="BeezleWindow"
+                                            Storyboard.TargetProperty="(Border.Opacity)"
+                                            From="1.0" To="0.0" Duration="0:0:1" 
                                             AutoReverse="False" RepeatBehavior="1x" 
                                          />
         </Storyboard>
