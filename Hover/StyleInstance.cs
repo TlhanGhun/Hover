@@ -40,7 +40,7 @@ namespace hover
         [ComVisible(true)]
         melon.MImage IStyleInstance.GetContent()
         {
-            
+          //  MessageBox.Show("GetContent");
             return null;
             throw new NotImplementedException();
         }
@@ -55,16 +55,23 @@ namespace hover
         [ComVisible(true)]
         void IStyleInstance.Show(bool Visible)
         {
+           // MessageBox.Show("Show: " + Visible.ToString());
         }
 
         [ComVisible(true)]
         void IStyleInstance.UpdateContent(ref notification_info NotificationInfo)
         {
+            
+            // MessageBox.Show("UpdateContent");
             try
             {
                 if (myDisplay == null)
                 {
                     myDisplay = new BeezleDisplay();
+                }
+                if (myDisplay.isClosing)
+                {
+                    myDisplay.stopClosing();
                 }
                 myDisplay.setNewIconPath(NotificationInfo.Icon);
                 myDisplay.setPriority(false);
@@ -136,7 +143,6 @@ namespace hover
                 Match myMatch = withPercentageMath.Match(text);
                 return Convert.ToInt32(myMatch.Groups["percentage"].ToString());
             }
-
             return 0;
         }
 

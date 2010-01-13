@@ -43,7 +43,7 @@ namespace hover
         [ComVisible(true)]
         string IStyleEngine.Date()
         {
-            return "2010-01-12";
+            return "2010-01-13";
         }
 
         [ComVisible(true)]
@@ -80,14 +80,14 @@ namespace hover
         [ComVisible(true)]
         string IStyleEngine.Path()
         {
-            return Assembly.GetExecutingAssembly().CodeBase;
+            return System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().CodeBase).Substring(6);
        
         }
 
         [ComVisible(true)]
         int IStyleEngine.Revision()
         {
-            return 2;
+            return 3;
         }
 
         [ComVisible(true)]
@@ -101,7 +101,7 @@ namespace hover
             Style.Major = Assembly.GetExecutingAssembly().GetName().Version.Major;
             Style.Minor = Assembly.GetExecutingAssembly().GetName().Version.Minor;
             Style.Name = "Hover";
-            Style.Path = System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().CodeBase).Substring(8);
+            Style.Path = System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().CodeBase).Substring(6);
             Style.Schemes = "Icon only|Title|Text|Meter";
             Style.Copyright = "Tlhan Ghun 2010";
             Style.SupportEmail = "info@tlhan-ghun.de";

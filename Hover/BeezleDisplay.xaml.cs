@@ -22,9 +22,10 @@ namespace BeezleTester
     /// </summary>
     public partial class BeezleDisplay : Window
     {
-        string imagePath = "";
-        DispatcherTimer timer = new DispatcherTimer();
-        bool isDimmed = false;
+        private string imagePath = "";
+        private DispatcherTimer timer = new DispatcherTimer();
+        private bool isDimmed = false;
+        public bool isClosing = false;
 
         public BeezleDisplay()
         {
@@ -55,6 +56,7 @@ namespace BeezleTester
 
         public void closeNotification()
         {
+            isClosing = true;
             timer.Stop();
             Storyboard story;
             if(isDimmed) {
@@ -131,12 +133,32 @@ namespace BeezleTester
             this.closeNotification();
         }
 
+        public void stopClosing()
+        {
+            timer.Stop();
+            isClosing = false;
+        }
+
         /// <summary>
         /// Closes the window after we're done fading out.
         /// </summary>
         void story_Completed(object sender, EventArgs e)
         {
-            this.Hide();
+            if (isClosing)
+            {
+                this.Hide();
+            }
+            else
+            {
+                if (isDimmed)
+                {
+                    this.Opacity = 0.2;
+                }
+                else
+                {
+                    this.Opacity = 1;
+                }
+            }
         }
 
 
